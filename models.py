@@ -36,18 +36,10 @@ class Product(models.Model):
     digital = models.BooleanField(default=False, null=True, blank=False)
     image = models.ImageField(blank=True)
     slug = models.SlugField(unique=True, null=True)
-    case_type = models.CharField(max_length=200, null=True)
+    type = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.name
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.image.url
-        except:
-            url = ''
-        return url
 
 
 class Analytics(models.Model):
@@ -56,6 +48,14 @@ class Analytics(models.Model):
 
     def __str__(self):
         return self.item_id
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
 
 
 class ProductImage(models.Model):
@@ -136,6 +136,10 @@ class OrderItem(models.Model):
         Order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.order)
+
 
     @property
     def get_total(self):
